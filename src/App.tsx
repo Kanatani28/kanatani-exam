@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import HeroSection from "./components/organisms/HeroSection";
+import React from "react";
+import { RoconRoot, useRoutes } from "rocon/react";
+import toplevelRoutes from "./routes";
 
-function App() {
-  return (
-    <>
-      <HeroSection />
-      <div className="bg-gray-100 rounded-xl p-8"></div>
-    </>
-  );
-}
+const Routes: React.FC = () => {
+  return useRoutes(toplevelRoutes);
+};
+
+const App = () => (
+  <RoconRoot>
+    <Routes />
+  </RoconRoot>
+);
 
 export default App;

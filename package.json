@@ -7,10 +7,13 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "history": "^5.0.0",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "rocon": "^1.2.2"
   },
   "devDependencies": {
+    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
