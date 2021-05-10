@@ -1,5 +1,6 @@
 import React from "react";
 import { Question } from "../../@types";
+import QuestionChoice from "../atoms/QuestionChoice";
 
 type Props = {
   question: Question;
@@ -13,21 +14,16 @@ const QuestionForm: React.VFC<Props> = React.memo(
     return (
       <div>
         <div className="block">
-          <h2 className="text-gray-700">{question.text}</h2>
-          <div className="mt-2">
+          <h2 className="bg-indigo-100 text-gray-700 text-lg py-10 px-5">
+            {question.text}
+          </h2>
+          <div className="mt-5">
             {question.choices.map((choice, index) => (
-              <div key={choice.text}>
-                <label className="inline-flex items-center">
-                  <input
-                    type={isMultiAnswers ? "checkbox" : "radio"}
-                    name="radio"
-                    value={index}
-                    onChange={changeChoice}
-                  />
-
-                  <span className="ml-2">{choice.text}</span>
-                </label>
-              </div>
+              <QuestionChoice
+                {...{ isMultiAnswers, index, onChange: changeChoice }}
+              >
+                {choice.text}
+              </QuestionChoice>
             ))}
           </div>
         </div>

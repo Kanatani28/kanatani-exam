@@ -1,55 +1,87 @@
 import React, { useState, useCallback } from "react";
-import { Choice, Question } from "../../../@types";
+import { Question } from "../../../@types";
 import Presenter from "./presenter";
+import ResultPresenter from "./result";
 
 const questions: Question[] = [
   {
-    text: "問題文",
+    text: "maroKanataniさんの生年月日はいつでしょう？",
     choices: [
       {
-        text: "選択肢１",
+        text: "1965年2月8日",
         isAnswer: false,
       },
       {
-        text: "選択肢2",
-        isAnswer: false,
-      },
-      {
-        text: "選択肢3",
+        text: "1994年2月8日",
         isAnswer: true,
       },
       {
-        text: "選択肢4",
+        text: "2038年2月8日",
+        isAnswer: false,
+      },
+      {
+        text: "794年2月8日",
         isAnswer: false,
       },
     ],
     explanation: {
-      text: "解説文",
+      text: "1994年2月8日生まれです。",
       html: "",
     },
   },
   {
-    text: "問題文2",
+    text:
+      "次のうち、maroKanataniさんができないことはどれでしょう？（複数回答）",
     choices: [
       {
-        text: "選択肢１-2",
+        text: "美味しい料理を作る",
         isAnswer: true,
       },
       {
-        text: "選択肢2-2",
+        text: "コントラバスを演奏する",
         isAnswer: false,
       },
       {
-        text: "選択肢3-2",
+        text: "50m走を7秒台で走る",
         isAnswer: false,
       },
       {
-        text: "選択肢4-4",
+        text: "バク転",
+        isAnswer: true,
+      },
+      {
+        text: "プログラミング",
+        isAnswer: false,
+      },
+    ],
+    explanation: {
+      text:
+        "バク転はできません。首がもげるイメージしか湧かない・・・。料理も美味しいものは作れません。",
+      html: "2",
+    },
+  },
+  {
+    text: "次のうち、maroKanataniさんが最近買ったものは何でしょう？",
+    choices: [
+      {
+        text: "ギター",
+        isAnswer: false,
+      },
+      {
+        text: "低反発枕",
+        isAnswer: false,
+      },
+      {
+        text: "車",
+        isAnswer: false,
+      },
+      {
+        text: "Nintendo Switch",
         isAnswer: true,
       },
     ],
     explanation: {
-      text: "解説文2",
+      text: "お家時間を快適に過ごすためにNintendo Switchを購入しました。",
       html: "2",
     },
   },
@@ -59,7 +91,10 @@ const ExamPage: React.VFC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isCorrect, setCorrect] = useState<boolean | undefined>(undefined);
   const [currentChoices, setCurrentChoices] = useState<number[]>([]);
-  const [score, setScore] = useState();
+  const [score, setScore] = useState<number>(0);
+  const [isAnswerVisible, setAnswerVisible] = useState<boolean>(false);
+  const [isResultVisible, setResultVisible] = useState<boolean>(false);
+  const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
 
   const handleAnswerBtnClick = useCallback(() => {
     const answers = questions[currentIndex].choices.filter(
@@ -78,7 +113,10 @@ const ExamPage: React.VFC = () => {
         .map((choice) => choice.isAnswer)
         .reduce((prev, current) => prev && current);
 
+    setAnswerVisible(true);
+    setAlreadyAnswered(true);
     setCorrect(isAllCorrect);
+    isAllCorrect && setScore((prev) => prev + 1);
   }, [currentChoices, currentIndex, isCorrect]);
 
   const handleUserChoice = useCallback(
@@ -102,18 +140,44 @@ const ExamPage: React.VFC = () => {
     setCurrentIndex((prev) => prev + 1);
     setCorrect(undefined);
     setCurrentChoices([]);
+    setAnswerVisible(false);
+    setAlreadyAnswered(false);
   }, [currentIndex]);
+
+  const showTotalResult = useCallback(() => {
+    setResultVisible(true);
+  }, [score, questions.length]);
+
+  const handleRetryBtnClick = useCallback(() => {
+    setCurrentIndex(0);
+    setCorrect(undefined);
+    setCurrentChoices([]);
+    setAnswerVisible(false);
+    setScore(0);
+    setResultVisible(false);
+    setAlreadyAnswered(false);
+  }, []);
 
   return (
     <>
-      <button onClick={() => console.log(currentChoices)}>aaaaa</button>
-      <Presenter
-        question={questions[currentIndex]}
-        isCorrect={isCorrect}
-        changeChoice={handleUserChoice}
-        checkAnswer={handleAnswerBtnClick}
-        incrementIndex={incrementIndex}
-      />
+      {isResultVisible ? (
+        <ResultPresenter
+          retry={handleRetryBtnClick}
+          percentage={score / questions.length}
+        />
+      ) : (
+        <Presenter
+          alreadyAnswered={alreadyAnswered}
+          isAnswerVisible={isAnswerVisible}
+          isLast={questions.length === currentIndex + 1}
+          question={questions[currentIndex]}
+          isCorrect={isCorrect}
+          changeChoice={handleUserChoice}
+          checkAnswer={handleAnswerBtnClick}
+          incrementIndex={incrementIndex}
+          showTotalResult={showTotalResult}
+        />
+      )}
     </>
   );
 };
