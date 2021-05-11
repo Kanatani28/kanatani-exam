@@ -20,6 +20,7 @@ const QuestionForm: React.VFC<Props> = React.memo(
           <div className="mt-5">
             {question.choices.map((choice, index) => (
               <QuestionChoice
+                key={choice.text}
                 {...{ isMultiAnswers, index, onChange: changeChoice }}
               >
                 {choice.text}

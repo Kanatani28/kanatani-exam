@@ -2,6 +2,7 @@ import React from "react";
 import { Question } from "../../../@types";
 import QuestionForm from "../../molecules/QuestionForm";
 import Button from "../../atoms/Button";
+import Footer from "../../atoms/Footer";
 
 type Props = {
   isLast: boolean;
@@ -27,12 +28,12 @@ const Presenter: React.VFC<Props> = ({
   alreadyAnswered,
 }) => (
   <>
-    <div className="container mx-auto pt-16">
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-start-2 col-span-4">
+    <div className="flex flex-col min-h-screen pt-16">
+      <div className="flex-grow mx-10 md:mx-32 lg:mx-64">
+        <div>
           <QuestionForm question={question} changeChoice={changeChoice} />
         </div>
-        <div className="col-start-2 col-span-4">
+        <div>
           <Button disabled={alreadyAnswered} onClick={checkAnswer}>
             回答する
           </Button>
@@ -51,6 +52,7 @@ const Presenter: React.VFC<Props> = ({
           </div>
         )}
       </div>
+      <Footer />
     </div>
   </>
 );
