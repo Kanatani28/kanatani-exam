@@ -5,6 +5,7 @@ type Props = {
   isMultiAnswers: boolean;
   index: number;
   onChange: (event: { target: HTMLInputElement }) => void;
+  alreadyAnswered: boolean;
 };
 
 const QuestionChoice: React.VFC<Props> = ({
@@ -12,6 +13,7 @@ const QuestionChoice: React.VFC<Props> = ({
   isMultiAnswers,
   index,
   onChange,
+  alreadyAnswered,
 }) => {
   return (
     <div className="py-5 pl-3 bg-red-100" key={children}>
@@ -21,6 +23,7 @@ const QuestionChoice: React.VFC<Props> = ({
           name="radio"
           value={index}
           onChange={onChange}
+          disabled={alreadyAnswered}
         />
         <span className="ml-2">{children}</span>
       </label>

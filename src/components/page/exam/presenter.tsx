@@ -31,7 +31,11 @@ const Presenter: React.VFC<Props> = ({
     <div className="flex flex-col min-h-screen pt-16">
       <div className="flex-grow mx-10 md:mx-32 lg:mx-64 space-y-5 mb-5">
         <div>
-          <QuestionForm question={question} changeChoice={changeChoice} />
+          <QuestionForm
+            question={question}
+            changeChoice={changeChoice}
+            alreadyAnswered={alreadyAnswered}
+          />
         </div>
         <div>
           <Button disabled={alreadyAnswered} onClick={checkAnswer}>

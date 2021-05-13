@@ -5,10 +5,11 @@ import QuestionChoice from "../atoms/QuestionChoice";
 type Props = {
   question: Question;
   changeChoice: (event: { target: HTMLInputElement }) => void;
+  alreadyAnswered: boolean;
 };
 
 const QuestionForm: React.VFC<Props> = React.memo(
-  ({ question, changeChoice }) => {
+  ({ question, changeChoice, alreadyAnswered }) => {
     const isMultiAnswers =
       question.choices.filter((choice) => choice.isAnswer).length > 1;
     return (
@@ -22,6 +23,7 @@ const QuestionForm: React.VFC<Props> = React.memo(
               <QuestionChoice
                 key={choice.text}
                 {...{ isMultiAnswers, index, onChange: changeChoice }}
+                alreadyAnswered={alreadyAnswered}
               >
                 {choice.text}
               </QuestionChoice>
