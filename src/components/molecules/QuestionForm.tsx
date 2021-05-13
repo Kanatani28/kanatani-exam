@@ -17,7 +17,7 @@ const QuestionForm: React.VFC<Props> = React.memo(
           <h2 className="bg-indigo-100 text-gray-700 text-lg py-10 px-5">
             {question.text}
           </h2>
-          <div className="mt-5 space-y-1">
+          <div className="mt-5 space-y-3">
             {question.choices.map((choice, index) => (
               <QuestionChoice
                 key={choice.text}
