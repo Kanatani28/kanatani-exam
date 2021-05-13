@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "../../atoms/Button";
-import Footer from "../../atoms/Footer";
 
 type Props = {
   percentage: number;
@@ -9,14 +8,9 @@ type Props = {
 
 const ResultPresenter: React.VFC<Props> = ({ percentage, retry }) => (
   <>
-    <div className="flex flex-col min-h-screen pt-16">
-      <div className="flex-grow mx-10 md:mx-32 lg:mx-64">
-        <Main percentage={percentage} />
-        <div className="text-center my-10">
-          <Button onClick={retry}>もう一度チャレンジする</Button>
-        </div>
-      </div>
-      <Footer />
+    <Main percentage={percentage} />
+    <div className="text-center my-10">
+      <Button onClick={retry}>もう一度チャレンジする</Button>
     </div>
   </>
 );

@@ -2,7 +2,7 @@ import React from "react";
 import { Question } from "../../../@types";
 import QuestionForm from "../../molecules/QuestionForm";
 import Button from "../../atoms/Button";
-import Footer from "../../atoms/Footer";
+import { motion } from "framer-motion";
 
 type Props = {
   isLast: boolean;
@@ -28,42 +28,40 @@ const Presenter: React.VFC<Props> = ({
   alreadyAnswered,
 }) => (
   <>
-    <div className="flex flex-col min-h-screen pt-16">
-      <div className="flex-grow mx-10 md:mx-32 lg:mx-64 space-y-5 mb-5">
-        <div>
-          <QuestionForm
-            question={question}
-            changeChoice={changeChoice}
-            alreadyAnswered={alreadyAnswered}
-          />
-        </div>
-        <div>
-          <Button disabled={alreadyAnswered} onClick={checkAnswer}>
-            回答する
-          </Button>
-        </div>
-        {isAnswerVisible && (
-          <div className="col-start-2 col-span-4 space-y-3">
-            <div
-              className={`text-lg font-bold ${
-                isCorrect ? "text-green-700" : "text-red-700"
-              }`}
-            >
-              {isCorrect ? "正解！" : "不正解"}
-            </div>
-            <div>{question.explanation.text}</div>
-            <div>
-              {!isLast ? (
-                <Button onClick={incrementIndex}>次の問題へ</Button>
-              ) : (
-                <Button onClick={showTotalResult}>総合結果を見る</Button>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-      <Footer />
+    <div>
+      <QuestionForm
+        question={question}
+        changeChoice={changeChoice}
+        alreadyAnswered={alreadyAnswered}
+      />
     </div>
+    <div>
+      <Button disabled={alreadyAnswered} onClick={checkAnswer}>
+        回答する
+      </Button>
+    </div>
+    {isAnswerVisible && (
+      <motion.div
+        className="col-start-2 col-span-4 space-y-3"
+        animate={{ opacity: [0, 1] }}
+      >
+        <div
+          className={`text-lg font-bold ${
+            isCorrect ? "text-green-700" : "text-red-700"
+          }`}
+        >
+          {isCorrect ? "正解！" : "不正解"}
+        </div>
+        <div>{question.explanation.text}</div>
+        <div>
+          {!isLast ? (
+            <Button onClick={incrementIndex}>次の問題へ</Button>
+          ) : (
+            <Button onClick={showTotalResult}>総合結果を見る</Button>
+          )}
+        </div>
+      </motion.div>
+    )}
   </>
 );
 
