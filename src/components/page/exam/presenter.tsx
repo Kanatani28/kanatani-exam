@@ -29,7 +29,7 @@ const Presenter: React.VFC<Props> = ({
 }) => (
   <>
     <div className="flex flex-col min-h-screen pt-16">
-      <div className="flex-grow mx-10 md:mx-32 lg:mx-64">
+      <div className="flex-grow mx-10 md:mx-32 lg:mx-64 space-y-3">
         <div>
           <QuestionForm question={question} changeChoice={changeChoice} />
         </div>
@@ -39,7 +39,7 @@ const Presenter: React.VFC<Props> = ({
           </Button>
         </div>
         {isAnswerVisible && (
-          <div className="col-start-2 col-span-4">
+          <div className="col-start-2 col-span-4 space-y-3">
             <div>{isCorrect ? "正解！" : "不正解"}</div>
             <div>{question.explanation.text}</div>
             <div>

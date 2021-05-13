@@ -14,7 +14,7 @@ const QuestionChoice: React.VFC<Props> = ({
   onChange,
 }) => {
   return (
-    <div className="py-5" key={children}>
+    <div className="py-5 pl-3 bg-red-100" key={children}>
       <label className="inline-flex items-center">
         <input
           type={isMultiAnswers ? "checkbox" : "radio"}
