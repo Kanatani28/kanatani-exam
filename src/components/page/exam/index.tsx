@@ -3,6 +3,8 @@ import Presenter from "./presenter";
 import ResultPresenter from "./result";
 import Loading from "../../atoms/Loading";
 import useQuestions from "../../../hooks/useQuestions";
+import { motion, useAnimation } from "framer-motion";
+import Footer from "../../atoms/Footer";
 
 const ExamPage: React.VFC = () => {
   const [questions, isLoading] = useQuestions();
@@ -13,6 +15,8 @@ const ExamPage: React.VFC = () => {
   const [isAnswerVisible, setAnswerVisible] = useState<boolean>(false);
   const [isResultVisible, setResultVisible] = useState<boolean>(false);
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
+
+  const animationCtrl = useAnimation();
 
   const handleAnswerBtnClick = useCallback(() => {
     const answers = questions[currentIndex].choices.filter(
@@ -60,10 +64,12 @@ const ExamPage: React.VFC = () => {
     setCurrentChoices([]);
     setAnswerVisible(false);
     setAlreadyAnswered(false);
+    animationCtrl.start({ opacity: [0, 1], x: ["50%", "0%"] });
   }, [currentIndex]);
 
   const showTotalResult = useCallback(() => {
     setResultVisible(true);
+    animationCtrl.start({ opacity: [0, 1] });
   }, [score, questions.length]);
 
   const handleRetryBtnClick = useCallback(() => {
@@ -74,31 +80,43 @@ const ExamPage: React.VFC = () => {
     setScore(0);
     setResultVisible(false);
     setAlreadyAnswered(false);
+    animationCtrl.start({ opacity: [0, 1] });
   }, []);
 
   return (
     <>
       {!isLoading && questions.length > 0 && (
-        <>
+        <div className="flex flex-col min-h-screen pt-16">
           {isResultVisible ? (
-            <ResultPresenter
-              retry={handleRetryBtnClick}
-              percentage={score / questions.length}
-            />
+            <motion.div
+              animate={animationCtrl}
+              className="flex-grow mx-10 md:mx-32 lg:mx-64"
+            >
+              <ResultPresenter
+                retry={handleRetryBtnClick}
+                percentage={score / questions.length}
+              />
+            </motion.div>
           ) : (
-            <Presenter
-              alreadyAnswered={alreadyAnswered}
-              isAnswerVisible={isAnswerVisible}
-              isLast={questions.length === currentIndex + 1}
-              question={questions[currentIndex]}
-              isCorrect={isCorrect}
-              changeChoice={handleUserChoice}
-              checkAnswer={handleAnswerBtnClick}
-              incrementIndex={incrementIndex}
-              showTotalResult={showTotalResult}
-            />
+            <motion.div
+              className="flex-grow mx-10 md:mx-32 lg:mx-64 space-y-5 mb-5"
+              animate={animationCtrl}
+            >
+              <Presenter
+                alreadyAnswered={alreadyAnswered}
+                isAnswerVisible={isAnswerVisible}
+                isLast={questions.length === currentIndex + 1}
+                question={questions[currentIndex]}
+                isCorrect={isCorrect}
+                changeChoice={handleUserChoice}
+                checkAnswer={handleAnswerBtnClick}
+                incrementIndex={incrementIndex}
+                showTotalResult={showTotalResult}
+              />
+            </motion.div>
           )}
-        </>
+          <Footer />
+        </div>
       )}
       {(isLoading || questions.length <= 0) && <Loading />}
     </>
